@@ -8,11 +8,11 @@ const bcrypt = require('bcrypt');
 const Model = require('./model/Model');
 
 const port = 5000;
-/*
+
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected!'))
-  .catch(err => console.log(err));*/
-
+  .catch(err => console.log(err));
+/*
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -33,7 +33,7 @@ async function run() {
     await client.close();
   }
 }
-run().catch(console.dir);
+run().catch(console.dir);*/
 
 app.use(cors());
 
