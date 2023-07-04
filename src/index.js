@@ -68,7 +68,7 @@ app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-      const check = await LogInCollection.findOne({ username })
+      const check = await Model.findOne({ username })
 
       if (check.password === password) {
         res.json({ message: 'Login successful' });
