@@ -64,6 +64,34 @@ app.post('/api/users', (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
+
+  const { username, password } = req.body;
+
+  try {
+      const check = await LogInCollection.findOne({ username })
+
+      if (check.password === password) {
+        res.json({ message: 'Login successful' });
+      }
+
+      else {
+        return res.status(401).json({ error: 'Invalid password ' });
+      }
+
+
+  } 
+  
+  catch (e) {
+
+      res.send("wrong details")
+      
+
+  }
+
+
+});
+/*
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   // Find the user in the database based on the username
@@ -77,7 +105,7 @@ app.post('/api/login', async (req, res) => {
       bcrypt.compare(password, user.password)
         .then(match => {
           if (!match) {
-            return res.status(401).json({ error: 'Invalid password' + password + 'vs' + user.password });
+            return res.status(401).json({ error: 'Invalid password ' + password + ' vs ' + user.password });
           }
 
           res.json({ message: 'Login successful' });
@@ -91,7 +119,7 @@ app.post('/api/login', async (req, res) => {
       console.log(err);
       res.status(500).json({ error: 'An error occurred during login' });
     });
-});
+});*/
 
 
 app.listen(port, () => {
