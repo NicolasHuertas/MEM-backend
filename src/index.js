@@ -63,11 +63,11 @@ app.post('/api/users', (req, res) => {
     });
 });
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   // Find the user in the database based on the username
-  Model.findOne({ username })
+  await Model.findOne({ username })
     .then(user => {
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
