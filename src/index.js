@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://nicolashuertas:GDOPwuROWfyREJpG@cluster0.catgcnu.mongodb.net/?retryWrites=true&w=majority";
+const pass = process.env.MONGO_PASSWORD;
+const uri = `mongodb+srv://nicolashuertas:${pass}@cluster0.catgcnu.mongodb.net/?retryWrites=true&w=majority`;
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
@@ -53,9 +54,9 @@ app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await Model.findOne({ username });
+    const user = await Model.findOne({ $or: [{ username }, { email: username }] });
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username' });
+      return res.status(401).json({ error: 'Invalid username or email' });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
