@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const pass = secrets.MONGO_PASSWORD;
+const pass = process.env.MONGO_PASSWORD;
 const uri = `mongodb+srv://nicolashuertas:${pass}@cluster0.catgcnu.mongodb.net/?retryWrites=true&w=majority`;
 const mongoose = require('mongoose');
 const cors = require('cors');
