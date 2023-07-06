@@ -59,6 +59,7 @@ app.post('/api/users', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
+  const email = username;
 
   try {
     const user = await Model.findOne({ $or: [{ username }, { email }] });
