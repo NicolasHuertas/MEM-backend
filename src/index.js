@@ -27,23 +27,30 @@ app.post('/api/users', async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10); // Hash the password using bcrypt
+    const user = await Model.findOne({ $or: [{ username }, { email }] });
+    if (!user) {
+      const hashedPassword = await bcrypt.hash(password, 10); // Hash the password using bcrypt
 
-    const newUser = new Model({
-      username,
-      email,
-      password: hashedPassword // Save the hashed password
-    });
-
-    newUser.save()
-      .then(user => {
-        console.log('User saved:', user);
-        res.json(user);
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({ error: 'Unable to save user' });
+      const newUser = new Model({
+        username,
+        email,
+        password: hashedPassword // Save the hashed password
       });
+  
+      newUser.save()
+        .then(user => {
+          console.log('User saved:', user);
+          res.json(user);
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({ error: 'Unable to save user' });
+        });
+    }
+    else {
+      res.status(500).json({ error: 'User already exists' });
+    }
+    
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Unable to save user' });
@@ -54,7 +61,7 @@ app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await Model.findOne({ $or: [{ username }, { email: username }] });
+    const user = await Model.findOne({ $or: [{ username }, { email }] });
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or email' });
     }
